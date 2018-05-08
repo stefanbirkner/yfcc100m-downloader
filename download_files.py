@@ -5,12 +5,10 @@ import urllib.request
 from xml.dom.minidom import parse
 
 def collect_index_files(path):
-    index_files = []
     for root, subdirs, files in os.walk(path):
         file_path = os.path.join(root, "index.xml")
         if os.path.exists(file_path):
-            index_files.append(file_path)
-    return index_files
+            yield file_path
 
 def download_files(paths):
     for path in paths:
@@ -19,14 +17,11 @@ def download_files(paths):
         urllib.request.urlretrieve (url, path)
 
 def extract_image_paths(index_files):
-    paths = []
     for index_path in index_files:
         doc = parse(index_path)
         for content in doc.getElementsByTagName("Contents"):
             image_path = content.getElementsByTagName("Key")[0].firstChild.data
-            paths.append(image_path)
-    return paths
-
+            yield image_path
 
 def parse_file(path):
     datasource = open(path)
