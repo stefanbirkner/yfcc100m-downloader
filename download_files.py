@@ -7,8 +7,8 @@ from xml.dom.minidom import parse
 def collect_index_files(path):
     index_files = []
     for root, subdirs, files in os.walk(path):
-        for filename in files:
-            file_path = os.path.join(root, filename)
+        file_path = os.path.join(root, "index.xml")
+        if os.path.exists(file_path):
             index_files.append(file_path)
     return index_files
 
