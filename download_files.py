@@ -18,7 +18,7 @@ def download_files(paths):
 
 def extract_image_paths(index_files):
     for index_path in index_files:
-        doc = parse(index_path)
+        doc = parse_file(index_path)
         for content in doc.getElementsByTagName("Contents"):
             image_path = content.getElementsByTagName("Key")[0].firstChild.data
             yield image_path
