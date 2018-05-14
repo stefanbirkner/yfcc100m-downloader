@@ -10,11 +10,18 @@ def collect_index_files(path):
         if os.path.exists(file_path):
             yield file_path
 
-def download_files(paths):
+def download(path):
+    url = "https://multimedia-commons.s3-us-west-2.amazonaws.com/" + path
+    print("Download " + url)
+    urllib.request.urlretrieve (url, path)
+
+def ensure_file_is_downloaded(path):
+    if not os.path.isfile(path):
+        download(path)
+
+def ensure_files_are_downloaded(path):
     for path in paths:
-        url = "https://multimedia-commons.s3-us-west-2.amazonaws.com/" + path
-        print("Download " + url)
-        urllib.request.urlretrieve (url, path)
+        ensure_file_is_downloaded(path)
 
 def extract_image_paths(index_files):
     for index_path in index_files:
@@ -29,4 +36,4 @@ def parse_file(path):
 
 index_files = collect_index_files("data")
 paths = extract_image_paths(index_files)
-download_files(paths)
+ensure_files_are_downloaded(paths)
